@@ -391,7 +391,7 @@
       <link>/zh/sessions/datalake-906852.html</link>
       <pubDate>Sat, 08 Aug 2026 17:15:00 +0000</pubDate>
       <guid>/zh/sessions/datalake-906852.html</guid>
-      <description>&lt;p&gt;自2020年以来，腾讯一直利用Apache Iceberg构建其Lakehouse数据基础设施。2022年，腾讯云开始在云上向用户提供基于Iceberg的Lakehouse服务。2024年，我们引入了包括Apache Amoro和Apache Gravitino在内的优秀项目，为用户提供更强大、更智能、更全场景的Lakehouse服务。&lt;/p&gt;&#xA;&lt;p&gt;本次主题演讲将分享腾讯云多年来在Lakehouse架构方面的丰富经验，并重点介绍丰富的用户实践。我们将重点演示如何利用这些Apache项目构建云原生的Lakehouse架构，尤其侧重于流计算和BI场景。&lt;/p&gt;&#xA;&lt;h3 id=&#34;讲师&#34;&gt;讲师:&lt;/h3&gt;&#xA;&lt;img src=&#34;https://sessionize.com/image/427b-400o400o1-XCDWSeV9FXWG42HjVudX9.jpg&#34; width=&#34;200&#34; /&gt;&#xD;&#xA;&lt;p&gt;Jinsong Zhou: 腾讯软件工程师, Apache Amoro（incubating）的 PPMC 成员&lt;/p&gt;&#xA;&lt;p&gt;Jinsong Zhou，腾讯软件工程师，在数据库和大数据领域拥有 8 年经验。目前，他领导腾讯云基于 Apache Iceberg 的 Lakehouse 架构的实现，并担任 Apache Amoro（incubating）的 PPMC 成员，积极推动社区发展。&lt;/p&gt;</description>
+      <description>&lt;p&gt;自2020年以来，腾讯一直利用Apache Iceberg构建其Lakehouse数据基础设施。2022年，腾讯云开始在云上向用户提供基于Iceberg的Lakehouse服务。2024年，我们引入了包括Apache Amoro和Apache Gravitino在内的优秀项目，为用户提供更强大、更智能、更全场景的Lakehouse服务。&lt;/p&gt;&#xA;&lt;p&gt;本次主题演讲将分享腾讯云多年来在Lakehouse架构方面的丰富经验，并重点介绍丰富的用户实践。我们将重点演示如何利用这些Apache项目构建云原生的Lakehouse架构，尤其侧重于流计算和BI场景。&lt;/p&gt;&#xA;&lt;h3 id=&#34;讲师&#34;&gt;讲师:&lt;/h3&gt;&#xA;&lt;img src=&#34;https://sessionize.com/image/427b-400o400o1-XCDWSeV9FXWG42HjVudX9.jpg&#34; width=&#34;200&#34; /&gt;&#xA;&lt;p&gt;Jinsong Zhou: 腾讯软件工程师, Apache Amoro（incubating）的 PPMC 成员&lt;/p&gt;&#xA;&lt;p&gt;Jinsong Zhou，腾讯软件工程师，在数据库和大数据领域拥有 8 年经验。目前，他领导腾讯云基于 Apache Iceberg 的 Lakehouse 架构的实现，并担任 Apache Amoro（incubating）的 PPMC 成员，积极推动社区发展。&lt;/p&gt;</description>
     </item>
     <item>
       <title>AI 与云原生时代下的未来就绪数据平台</title>
