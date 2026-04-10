@@ -201,6 +201,45 @@
 
 </div>
 
+
+<div id="export-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>📋 导出的 JSON 数据格式说明</h3>
+            <button class="modal-close" id="close-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p>点击“确认导出”将下载包含以下字段的完整 JSON 文件：</p>
+            <table class="field-table">
+                <thead>
+                    <tr><th>字段名</th><th>中文含义</th><th>示例</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>title</code></td><td>标题</td><td>"社区的力量"</td></tr>
+                    <tr><td><code>date</code></td><td>时间</td><td>"2026-08-07T09:30:00+08:00"</td></tr>
+                    <tr><td><code>track</code></td><td>专题/分会场</td><td>"keynote"</td></tr>
+                    <tr><td><code>presenters</code></td><td>演讲者</td><td>"姜 宁"</td></tr>
+                    <tr><td><code>type</code></td><td>演讲语言/类型</td><td>"中文演讲"</td></tr>
+                    <tr><td><code>room</code></td><td>会议室</td><td>"颐和厅"</td></tr>
+                    <tr><td><code>abstract</code></td><td>摘要</td><td>"分布式追踪对于可观察性至关重要..."</td></tr>
+                    <tr><td><code>permalink</code></td><td>详细信息链接</td><td>"/sessions/community-power/"</td></tr>
+                    <tr><td><code>detectedProjects</code></td><td>相关项目列表</td><td>["skywalking", "kafka"]</td></tr>
+                    <tr><td><code>depth</code></td><td>演讲深度</td><td>"advanced" (初级/进阶/深度)</td></tr>
+                    <tr><td><code>stars</code></td><td>实战性评分</td><td>4 (1-5星)</td></tr>
+                    <tr><td><code>audiences</code></td><td>适合人群</td><td>["开发者", "架构师"]</td></tr>
+                </tbody>
+            </table>
+            <p style="margin-top: 16px; font-size: 13px; color: #6c757d;">
+                💡 提示：导出的 JSON 可用于自行分析或导入其他工具。
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" id="cancel-export">取消</button>
+            <button class="btn-primary" id="confirm-export">确认导出</button>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
@@ -482,6 +521,96 @@
         cursor: pointer;
     }
     .empty-message, .no-results { color: #6c757d; text-align: center; padding: 40px 0; }
+
+     
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
+    .modal-content {
+        background: white;
+        border-radius: 20px;
+        max-width: 700px;
+        width: 90%;
+        max-height: 80vh;
+        overflow-y: auto;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        animation: fadeIn 0.2s;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.95); }
+        to { opacity: 1; transform: scale(1); }
+    }
+    .modal-header {
+        padding: 20px 24px;
+        border-bottom: 1px solid #e9ecef;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .modal-header h3 { margin: 0; color: #0f072d; }
+    .modal-close {
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: #6c757d;
+    }
+    .modal-body { padding: 24px; }
+    .field-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+    }
+    .field-table th, .field-table td {
+        padding: 10px 12px;
+        text-align: left;
+        border-bottom: 1px solid #e9ecef;
+    }
+    .field-table th {
+        background: #f8f9fa;
+        font-weight: 600;
+        color: #495057;
+    }
+    .field-table code {
+        background: #e9ecef;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: monospace;
+    }
+    .modal-footer {
+        padding: 16px 24px;
+        border-top: 1px solid #e9ecef;
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+    }
+    .btn-primary, .btn-secondary {
+        padding: 8px 20px;
+        border-radius: 30px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        border: none;
+    }
+    .btn-primary {
+        background: #0f072d;
+        color: white;
+    }
+    .btn-primary:hover { background: #2a1a5e; }
+    .btn-secondary {
+        background: #e9ecef;
+        color: #495057;
+    }
+    .btn-secondary:hover { background: #dee2e6; }
 </style>
 
 <script>
@@ -675,38 +804,29 @@
         }
 
         
-        
-        function getRelatedSessions(currentSession, topN = 2) {
-            
+        function getRelatedSessions(currentSession, topN=2) {
             if (currentSession.relatedSessionsManual && currentSession.relatedSessionsManual.length > 0) {
-                const matchedSessions = currentSession.relatedSessionsManual
+                const matched = currentSession.relatedSessionsManual
                     .map(item => {
-                        
                         let match = sessions.find(s => s.permalink === item);
                         if (match) return match;
-                        
-                        const normalizedTitle = item.trim().toLowerCase();
-                        match = sessions.find(s => s.title.trim().toLowerCase() === normalizedTitle);
-                        if (match) return match;
-                        
-                        return null;
+                        const normalized = item.trim().toLowerCase();
+                        match = sessions.find(s => s.title.trim().toLowerCase() === normalized);
+                        return match || null;
                     })
                     .filter(s => s !== null);
-                
-                if (matchedSessions.length > 0) {
-                    return matchedSessions.slice(0, topN);
-                }
+                if (matched.length > 0) return matched.slice(0, topN);
             }
             
             
-            const curWords = new Set((currentSession.title + ' ' + currentSession.abstract).toLowerCase().split(/\W+/).filter(w => w.length > 2));
+            const curWords = new Set((currentSession.title+' '+currentSession.abstract).toLowerCase().split(/\W+/).filter(w=>w.length>2));
             const candidates = sessions.filter(s => s.permalink !== currentSession.permalink && s.dateObj.toDateString() === currentDate);
             return candidates.map(s => {
-                const otherWords = new Set((s.title + ' ' + s.abstract).toLowerCase().split(/\W+/).filter(w => w.length > 2));
+                const otherWords = new Set((s.title+' '+s.abstract).toLowerCase().split(/\W+/).filter(w=>w.length>2));
                 const intersection = [...curWords].filter(w => otherWords.has(w)).length;
                 const union = curWords.size + otherWords.size - intersection;
-                return { session: s, score: union ? intersection / union : 0 };
-            }).sort((a, b) => b.score - a.score).slice(0, topN).map(i => i.session);
+                return { session: s, score: union ? intersection/union : 0 };
+            }).sort((a,b)=>b.score-a.score).slice(0,topN).map(i=>i.session);
         }
 
         function renderSessions() {
@@ -806,7 +926,16 @@
             saveAs(new Blob([ics],{type:'text/calendar;charset=utf-8'}), 'my_schedule.ics');
         }
 
-        function exportFullJSON() {
+        
+        function showExportModal() {
+            document.getElementById('export-modal').style.display = 'flex';
+        }
+
+        function hideExportModal() {
+            document.getElementById('export-modal').style.display = 'none';
+        }
+
+        function doExportJSON() {
             const exportData = sessions.map(s => ({
                 title: s.title,
                 date: s.date,
@@ -823,6 +952,10 @@
             }));
             const blob = new Blob([JSON.stringify(exportData, null, 2)], {type: 'application/json'});
             saveAs(blob, 'acoc_sessions_full.json');
+        }
+
+        function exportFullJSON() {
+            showExportModal();
         }
 
         
@@ -846,6 +979,22 @@
             exportBtn.addEventListener('click', exportICS);
             document.getElementById('export-json').addEventListener('click', exportFullJSON);
             document.getElementById('clear-filters').addEventListener('click', clearFilters);
+            
+            
+            const confirmBtn = document.getElementById('confirm-export');
+            const cancelBtn = document.getElementById('cancel-export');
+            const closeBtn = document.getElementById('close-modal');
+            const modalOverlay = document.getElementById('export-modal');
+            
+            confirmBtn.addEventListener('click', () => {
+                doExportJSON();
+                hideExportModal();
+            });
+            cancelBtn.addEventListener('click', hideExportModal);
+            closeBtn.addEventListener('click', hideExportModal);
+            modalOverlay.addEventListener('click', (e) => {
+                if (e.target === modalOverlay) hideExportModal();
+            });
         }
 
         function init() {
